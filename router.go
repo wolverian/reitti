@@ -11,7 +11,13 @@ import (
 	"strings"
 )
 
-var errNoRoute = fmt.Errorf("no route")
+type noRoute struct {
+	route string
+}
+
+func (n noRoute) Error() string {
+	return fmt.Sprintf("no handler found for route: %q", n.route)
+}
 
 type handler func(ctx context.Context, args ...string) (any, error)
 
@@ -93,7 +99,7 @@ func (r *Router) Match(name string) (func(ctx context.Context) (any, error), err
 			}, nil
 		}
 	}
-	return nil, errNoRoute
+	return nil, noRoute{name}
 }
 
 func compile(template string) []component {
