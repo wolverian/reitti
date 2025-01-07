@@ -1,3 +1,7 @@
+// Package reitti provides a simple router for matching routes with handlers.
+// It allows adding routes with template parameters and matching them against
+// incoming requests. The router supports context and can handle functions with
+// varying signatures as handlers.
 package reitti
 
 import (
@@ -7,10 +11,6 @@ import (
 	"strings"
 )
 
-// Package reitti provides a simple router for matching routes with handlers.
-// It allows adding routes with template parameters and matching them against
-// incoming requests. The router supports context and can handle functions with
-// varying signatures as handlers.
 var ErrNoRoute = fmt.Errorf("no route")
 
 type handler func(ctx context.Context, args ...string) (any, error)
