@@ -16,20 +16,20 @@ func TestRouter(t *testing.T) {
 		want         []string
 		wantErr      error
 	}{
-		{"empty router", []string{}, "repos/wolverian/fs-explorations/issues", ErrNoRoute, nil, nil},
+		{"empty router", []string{}, "repos/wolverian/reitti/issues", ErrNoRoute, nil, nil},
 		{"empty path", []string{"repos/{owner}/{repo}/issues"}, "", ErrNoRoute, nil, nil},
-		{"no match", []string{"repos/{owner}/{repo}/issues"}, "repos/wolverian/fs-explorations", ErrNoRoute, nil, nil},
+		{"no match", []string{"repos/{owner}/{repo}/issues"}, "repos/wolverian/reitti", ErrNoRoute, nil, nil},
 		{
 			name:   "github issues",
 			routes: []string{"repos/{owner}/{repo}/issues"},
-			path:   "repos/wolverian/fs-explorations/issues",
-			want:   []string{"wolverian", "fs-explorations"},
+			path:   "repos/wolverian/reitti/issues",
+			want:   []string{"wolverian", "reitti"},
 		},
 		{
 			name:   "multiple routes",
 			routes: []string{"repos/{owner}", "repos/{owner}/{repo}", "repos/{owner}/{repo}/issues/{issue}", "repos/{owner}/{repo}/issues", "repos/{owner}/{repo}/issues/{issue}"},
-			path:   "repos/wolverian/fs-explorations/issues",
-			want:   []string{"wolverian", "fs-explorations"},
+			path:   "repos/wolverian/reitti/issues",
+			want:   []string{"wolverian", "reitti"},
 		},
 	}
 	for _, tt := range tests {
