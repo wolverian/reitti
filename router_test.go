@@ -2,10 +2,28 @@ package reitti
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+func ExampleRouter_simple() {
+	r := &Router{}
+	r.Add("repos/{owner}/{repo}/issues", func(ctx context.Context, owner, repo string) (any, error) {
+		return fmt.Sprintf("owner=%s, repo=%s", owner, repo), nil
+	})
+
+	handler, _ := r.Match("repos/wolverian/reitti/issues")
+	result, _ := handler(context.Background())
+	fmt.Println(result)
+	_, err := r.Match("foobar")
+	fmt.Println(err)
+
+	// Output:
+	// owner=wolverian, repo=reitti
+	// no route
+}
 
 func TestRouter(t *testing.T) {
 	tests := []struct {
