@@ -20,6 +20,7 @@ package main
 import (
 	"context"
 	"fmt"
+
 	"github.com/wolverian/reitti"
 )
 
@@ -29,7 +30,7 @@ func main() {
 		return fmt.Sprintf("Owner: %s, Repo: %s", owner, repo), nil
 	})
 
-	handler, err := r.Match(context.Background(), "repos/wolverian/reitti/issues")
+	handler, err := r.Match("repos/wolverian/reitti/issues")
 	if err != nil {
 		fmt.Println("No route found")
 		return
@@ -41,6 +42,6 @@ func main() {
 		return
 	}
 
-	fmt.Println(result)
+	fmt.Println(result) // Output: Owner: wolverian, Repo: reitti
 }
 ```
