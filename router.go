@@ -85,7 +85,7 @@ func validateHandler(ty reflect.Type) {
 	}
 }
 
-func (r *Router) Match(ctx context.Context, name string) (func(ctx context.Context) (any, error), error) {
+func (r *Router) Match(name string) (func(ctx context.Context) (any, error), error) {
 	for _, route := range r.routes {
 		if params, ok := route.match(name); ok {
 			return func(ctx context.Context) (any, error) {

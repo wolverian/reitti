@@ -43,7 +43,7 @@ func TestRouter(t *testing.T) {
 					return args, nil
 				})
 			}
-			handler, err := r.Match(ctx, tt.path)
+			handler, err := r.Match(tt.path)
 			if tt.wantMatchErr != nil {
 				assert.EqualError(t, err, tt.wantMatchErr.Error(), "we get the expected error when no matching handler is found")
 				return
