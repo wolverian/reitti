@@ -6,7 +6,7 @@ import (
 
 type route struct {
 	template []component
-	handler  Handler
+	handler  handler
 }
 
 // match returns true if the route matches the name. A route can contain template parameters.

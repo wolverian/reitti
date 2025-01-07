@@ -9,7 +9,7 @@ import (
 
 var ErrNoRoute = fmt.Errorf("no route")
 
-type Handler func(ctx context.Context, args ...string) (any, error)
+type handler func(ctx context.Context, args ...string) (any, error)
 
 type Router struct {
 	routes []route
@@ -22,7 +22,7 @@ func (r *Router) Add(template string, handler any) {
 	})
 }
 
-// wrap converts a function into a route.Handler.
+// wrap converts a function into a route.handler.
 func wrap(f any) func(context.Context, ...string) (any, error) {
 	ty := reflect.TypeOf(f)
 	validateHandler(ty)
