@@ -16,9 +16,9 @@ func TestRouter(t *testing.T) {
 		want         []string
 		wantErr      error
 	}{
-		{"empty router", []string{}, "repos/wolverian/reitti/issues", ErrNoRoute, nil, nil},
-		{"empty path", []string{"repos/{owner}/{repo}/issues"}, "", ErrNoRoute, nil, nil},
-		{"no match", []string{"repos/{owner}/{repo}/issues"}, "repos/wolverian/reitti", ErrNoRoute, nil, nil},
+		{"empty router", []string{}, "repos/wolverian/reitti/issues", errNoRoute, nil, nil},
+		{"empty path", []string{"repos/{owner}/{repo}/issues"}, "", errNoRoute, nil, nil},
+		{"no match", []string{"repos/{owner}/{repo}/issues"}, "repos/wolverian/reitti", errNoRoute, nil, nil},
 		{
 			name:   "github issues",
 			routes: []string{"repos/{owner}/{repo}/issues"},

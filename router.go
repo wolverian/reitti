@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var ErrNoRoute = fmt.Errorf("no route")
+var errNoRoute = fmt.Errorf("no route")
 
 type handler func(ctx context.Context, args ...string) (any, error)
 
@@ -93,7 +93,7 @@ func (r *Router) Match(name string) (func(ctx context.Context) (any, error), err
 			}, nil
 		}
 	}
-	return nil, ErrNoRoute
+	return nil, errNoRoute
 }
 
 func compile(template string) []component {
