@@ -16,13 +16,13 @@ func ExampleRouter_simple() {
 
 	handler, _ := r.Match("repos/wolverian/reitti/issues")
 	result, _ := handler(context.Background())
-	fmt.Println(result)
+	fmt.Printf("result: %s\n", result)
 	_, err := r.Match("foobar")
-	fmt.Println(err)
+	fmt.Printf("error: %s\n", err)
 
 	// Output:
-	// owner=wolverian, repo=reitti
-	// no route
+	// result: owner=wolverian, repo=reitti
+	// error: no handler found for route: "foobar"
 }
 
 func TestRouter(t *testing.T) {
@@ -30,13 +30,27 @@ func TestRouter(t *testing.T) {
 		name         string
 		routes       []string
 		path         string
-		wantMatchErr error
+		wantMatchErr string
 		want         []string
 		wantErr      error
 	}{
-		{"empty router", []string{}, "repos/wolverian/reitti/issues", errNoRoute, nil, nil},
-		{"empty path", []string{"repos/{owner}/{repo}/issues"}, "", errNoRoute, nil, nil},
-		{"no match", []string{"repos/{owner}/{repo}/issues"}, "repos/wolverian/reitti", errNoRoute, nil, nil},
+		{
+			name:         "empty router",
+			routes:       []string{},
+			path:         "repos/wolverian/reitti/issues",
+			wantMatchErr: `no handler found for route: "repos/wolverian/reitti/issues"`,
+		},
+		{
+			name:         "empty path",
+			routes:       []string{"repos/{owner}/{repo}/issues"},
+			wantMatchErr: `no handler found for route: ""`,
+		},
+		{
+			name:         "no matching handler",
+			routes:       []string{"repos/{owner}/{repo}/issues"},
+			path:         "repos/wolverian/reitti",
+			wantMatchErr: `no handler found for route: "repos/wolverian/reitti"`,
+		},
 		{
 			name:   "github issues",
 			routes: []string{"repos/{owner}/{repo}/issues"},
@@ -44,10 +58,16 @@ func TestRouter(t *testing.T) {
 			want:   []string{"wolverian", "reitti"},
 		},
 		{
-			name:   "multiple routes",
-			routes: []string{"repos/{owner}", "repos/{owner}/{repo}", "repos/{owner}/{repo}/issues/{issue}", "repos/{owner}/{repo}/issues", "repos/{owner}/{repo}/issues/{issue}"},
-			path:   "repos/wolverian/reitti/issues",
-			want:   []string{"wolverian", "reitti"},
+			name: "multiple routes",
+			routes: []string{
+				"repos/{owner}",
+				"repos/{owner}/{repo}",
+				"repos/{owner}/{repo}/issues/{issue}",
+				"repos/{owner}/{repo}/issues",
+				"repos/{owner}/{repo}/issues/{issue}",
+			},
+			path: "repos/wolverian/reitti/issues",
+			want: []string{"wolverian", "reitti"},
 		},
 	}
 	for _, tt := range tests {
@@ -62,8 +82,8 @@ func TestRouter(t *testing.T) {
 				})
 			}
 			handler, err := r.Match(tt.path)
-			if tt.wantMatchErr != nil {
-				assert.EqualError(t, err, tt.wantMatchErr.Error(), "we get the expected error when no matching handler is found")
+			if tt.wantMatchErr != "" {
+				assert.EqualError(t, err, tt.wantMatchErr, "we get the expected error when no matching handler is found")
 				return
 			}
 			assert.NoError(t, err, "the handler is found")
