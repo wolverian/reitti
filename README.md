@@ -1,6 +1,8 @@
 # Reitti
 
-Reitti is a simple and flexible router package for Go. It allows you to define routes with template parameters and match them against incoming requests.
+Reitti[^1] is a simple and flexible router package for Go. It allows you to define routes with template parameters and match them against paths. It can be used outside HTTP APIs.
+
+[^1]: "reitti" is Finnish for "route".
 
 ## Installation
 

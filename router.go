@@ -1,7 +1,9 @@
 // Package reitti provides a simple router for matching routes with handlers.
-// It allows adding routes with template parameters and matching them against
-// incoming requests. The router supports context and can handle functions with
-// varying signatures as handlers.
+// Routes are paths with / separated components. A component can be a literal or
+// a parameter. A parameter is a placeholder for a value that can be extracted
+// when matching a route.
+//
+// The router supports context and can handle functions with varying signatures as handlers.
 package reitti
 
 import (
